@@ -1,0 +1,3 @@
+AIOPS
+    components
+    pages
