@@ -1,0 +1,12 @@
+.menu>li{
+    list-style: none;
+    padding: 10px 20px;
+    color: #333333;
+    cursor: pointer;
+}
+.menu{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #ccc;
+}

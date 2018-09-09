@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import {Tabs} from 'antd'
+import {Tabs,Icon} from 'antd'
 import Tubiao1 from '../../components/tubiao'
 import {connect} from 'react-redux'
+import './index.css'
 const TabPane = Tabs.TabPane;
 
 function callback(key) {
@@ -19,6 +20,19 @@ class ClickEventPage extends Component{
                 </Tabs>
                 <p>近一个小时</p>
                 <Tubiao1 data={this.props.data}/>
+                <ul className={'menu'}>
+                    <li>告警对象信息<Icon type="filter" theme="outlined" style={{fontSize:'20px'}}/></li>
+                    <li>应用名</li>
+                    <li>告警类型</li>
+                    <li>告警子类型</li>
+                    <li>告警详情</li>
+                    <li>告警开始时间</li>
+                    <li>告警处理时间</li>
+                    <li>告警状态</li>
+                    <li>告警处理人</li>
+                    <li>相关变更</li>
+                    <li>操作</li>
+                </ul>
             </div>
         )
     }
