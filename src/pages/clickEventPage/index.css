@@ -12,7 +12,7 @@
     padding: 0;
 }
 .menu{
-    background: #ddd;
+    background: #e8e8e8;
 }
 .bgData>li,.menu>li{
     float: left;
@@ -21,4 +21,7 @@
 }
 .bgData>li:nth-child(1){
     border-left: solid 20px;
+}
+.menu>li:nth-child(1){
+    border-left: solid 20px #e8e8e8;
 }
