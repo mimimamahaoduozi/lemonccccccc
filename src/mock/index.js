@@ -1,6 +1,7 @@
 // import eventDate from './event'
 var Mock = require('mockjs');
-var eventDate = require('./event/index')
+var data = require('./g2data/index');
+var bgdata = require('./bgdata/index')
 
-var data = Mock.mock('/array',eventDate);
-
+Mock.mock('/array',data);
+Mock.mock('/bgdata',bgdata);

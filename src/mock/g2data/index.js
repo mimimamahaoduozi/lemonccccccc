@@ -1,13 +1,9 @@
-import * as types from '../action-types'
-//G2中的所有信息
-let initState={
-    data:[
-        { genre: 'Sports', sold: 275 },
+export const data=[
+        { genre: 'Sports', sold: 275 ,},
         { genre: 'Strategy', sold: 115 },
         { genre: 'Action', sold: 120 },
         { genre: 'Shooter2', sold: 350 },
         { genre: 'Other', sold: 150 },
-
         { genre: 'Sports1', sold: 275 },
         { genre: 'Strategy1', sold: 115 },
         { genre: 'Action1', sold: 120 },
@@ -33,13 +29,4 @@ let initState={
         { genre: 'Action6', sold: 120 },
         { genre: 'Shooter6', sold: 350 },
         { genre: 'Other6', sold: 150 },
-    ]
-};
-export default function (state = initState, action) {
-    switch (action.type) {
-        case types.ADD_FORM_DATA:
-            return {...state,data:[...state.data,action.val]};
-        default :
-            return state
-    }
-}
+    ];
