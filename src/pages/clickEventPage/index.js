@@ -11,7 +11,7 @@ function callback(key) {
 }
 class ClickEventPage extends Component{
     constructor(props){
-        super(props)
+        super(props);
         this.state={
             G2data:[],
             Bgdata:[]
@@ -43,26 +43,35 @@ class ClickEventPage extends Component{
 
                 {this.state.G2data?<Tubiao1 data={this.state.G2data}/>: <div>加载中。。。</div> }
                 <ul className={'menu'}>
-                    <li>告警对象信息<Icon type="filter" theme="outlined" style={{fontSize:'20px'}}/></li>
-                    <li>应用名</li>
-                    <li>告警类型</li>
-                    <li>告警子类型</li>
-                    <li>告警详情</li>
-                    <li>告警开始时间</li>
-                    <li>告警处理时间</li>
-                    <li>告警状态</li>
-                    <li>告警处理人</li>
-                    <li>相关变更</li>
-                    <li>操作</li>
+                    <li style={{flex:1}}>告警对象信息<Icon type="filter" theme="outlined" style={{fontSize:'20px'}}/></li>
+                    <li style={{flex:1}}>应用名</li>
+                    <li style={{flex:1}}>告警类型</li>
+                    <li style={{flex:1}}>告警子类型</li>
+                    <li style={{flex:1}}>告警详情</li>
+                    <li style={{flex:1}}>告警开始时间</li>
+                    <li style={{flex:1}}>告警处理时间</li>
+                    <li style={{flex:1}}>告警状态</li>
+                    <li style={{flex:1}}>告警处理人</li>
+                    <li style={{flex:1}}>相关变更</li>
+                    <li style={{flex:1}}>操作</li>
                 </ul>
 
                 {/*循环数据渲染界面*/}
                 {
-                    this.state.Bgdata.map(data =>{
+                    this.state.Bgdata.map((data,index) =>{
                         return(
-                            <ul>
-                                <li>{data.dataInfo}</li>
-                                <li>{data.name}</li>
+                            <ul key={index} className={'bgData'}>
+                                <li style={{flex:1}}>{data.dataInfo}</li>
+                                <li style={{flex:1}}>{data.name}</li>
+                                <li style={{flex:1}}>{data.type}</li>
+                                <li style={{flex:1}}>{data.childType}</li>
+                                <li style={{flex:1}}>{data.xiangqing}</li>
+                                <li style={{flex:1}}>{data.datestart}</li>
+                                <li style={{flex:1}}>{data.dealdate}</li>
+                                <li style={{flex:1}}>{data.state}</li>
+                                <li style={{flex:1}}>{data.dealpeople}</li>
+                                <li style={{flex:1}}>{data.biangeng}</li>
+                                <li style={{flex:1}}>{data.name}</li>
                             </ul>
                         )
                     })

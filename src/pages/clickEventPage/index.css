@@ -1,6 +1,6 @@
 .menu>li{
     list-style: none;
-    padding: 10px 20px;
+    padding: 20px 0;
     color: #333333;
     cursor: pointer;
 }
@@ -8,6 +8,21 @@
     margin-left: -40px;
     display: flex;
     justify-content: space-between;
-    align-items: center;
     background-color: #ccc;
+    align-items: flex-start;
+}
+.ant-tabs-bar{
+    border-bottom: none!important;
+}
+.bgData{
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #e8e8e8;
+    margin: 0;
+    padding: 20px 0;
+}
+.bgData>li{
+    float: left;
 }
