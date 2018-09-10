@@ -1,28 +1,24 @@
-.menu>li{
-    list-style: none;
-    padding: 20px 0;
-    color: #333333;
-    cursor: pointer;
-}
-.menu{
-    margin-left: -40px;
-    display: flex;
-    justify-content: space-between;
-    background-color: #ccc;
-    align-items: flex-start;
-}
+
 .ant-tabs-bar{
     border-bottom: none!important;
 }
-.bgData{
+.bgData,.menu{
     list-style: none;
     display: flex;
     align-items: center;
     justify-content: space-between;
     border-bottom: 1px solid #e8e8e8;
     margin: 0;
+    padding: 0;
+}
+.menu{
+    background: #ddd;
+}
+.bgData>li,.menu>li{
+    float: left;
+    text-align: center;
     padding: 20px 0;
 }
-.bgData>li{
-    float: left;
+.bgData>li:nth-child(1){
+    border-left: solid 20px;
 }

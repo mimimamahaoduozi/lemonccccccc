@@ -24,7 +24,12 @@ class ClickEventPage extends Component{
             .then(res=>{
                 this.setState({
                     G2data:res[0].data,
-                    Bgdata:res[1].bgdata
+                    Bgdata:res[1].bgdata,
+                    typeColor:[
+                        '#a00',
+                        '#0a0',
+                        '#b70',
+                    ]
                 });
                 console.log(this.state);
             });
@@ -61,7 +66,7 @@ class ClickEventPage extends Component{
                     this.state.Bgdata.map((data,index) =>{
                         return(
                             <ul key={index} className={'bgData'}>
-                                <li style={{flex:1}}>{data.dataInfo}</li>
+                                <li style={{flex:1,borderLeftColor:this.state.typeColor[0]}}>{data.dataInfo}</li>
                                 <li style={{flex:1}}>{data.name}</li>
                                 <li style={{flex:1}}>{data.type}</li>
                                 <li style={{flex:1}}>{data.childType}</li>
