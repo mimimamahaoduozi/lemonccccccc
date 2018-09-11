@@ -4,7 +4,7 @@ import moment from 'moment';
 
 import 'antd/dist/antd.min.css';
 import {Link} from 'react-router-dom'
-import './case.css'
+import './index.css'
 
 const dateFormat = 'YYYY/MM/DD';
 class Nav extends Component{
@@ -27,19 +27,19 @@ class Nav extends Component{
                         mode="horizontal"
                     >
                         <Menu.Item key="mail">
-                            <Link to={'click'}>全部告警</Link>
+                            <Link to={'/click'}><h3>全部告警</h3></Link>
                         </Menu.Item>
                         <Menu.Item key="app">
-                            <Link to={'clickeventpage'}>单击事件</Link>
+                            <Link to={'/clickeventpage'}><h3>单击事件</h3></Link>
                         </Menu.Item>
                         <Menu.Item key="jiaoyi">
-                            <Link to={'click'}>交易事件</Link>
+                            <Link to={'/click'}><h3>交易事件</h3></Link>
                         </Menu.Item>
                         <Menu.Item key="huabei">
-                            <Link to={'click'}>基础设施事件</Link>
+                            <Link to={'/click'}><h3>基础设施事件</h3></Link>
                         </Menu.Item>
                         <Menu.Item key="alipay">
-                            <Link to={'click'}>其他自定义事件</Link>
+                            <Link to={'/click'}><h3>其他自定义事件</h3></Link>
                         </Menu.Item>
                     </Menu>
                     <Link to={'/'}><Icon type="plus-square" style={{fontSize:'24px'}}/></Link>

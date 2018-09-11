@@ -25,3 +25,18 @@
 .menu>li:nth-child(1){
     border-left: solid 20px #e8e8e8;
 }
+
+.select{
+    list-style: none;
+    display: flex;
+    align-items: center;
+    margin-left: -40px;
+}
+.select>li{
+    padding: 10px 20px;
+    cursor: pointer;
+}
+.select>li.active{
+    color: #1890ff;
+    border-bottom: 2px solid #1890ff;
+}

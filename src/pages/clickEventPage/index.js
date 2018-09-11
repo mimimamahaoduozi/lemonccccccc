@@ -1,52 +1,111 @@
 import React, { Component } from 'react';
-import {Tabs,Icon} from 'antd'
+import {Icon} from 'antd'
 import Tubiao1 from '../../components/tubiao'
 
-import ajax from '../../api/fetch'
+// import ajax from '../../api/fetch'
 import './index.css'
-const TabPane = Tabs.TabPane;
 
-function callback(key) {
-    console.log(key);
-}
+// require('../../mock');
+
+//图表的数据
+const G2data=[
+    { genre: 'Sports', sold: 275 ,},
+    { genre: 'Strategy', sold: 115 },
+    { genre: 'Action', sold: 120 },
+    { genre: 'Shooter2', sold: 350 },
+    { genre: 'Other', sold: 150 },
+    { genre: 'Sports1', sold: 275 },
+    { genre: 'Strategy1', sold: 115 },
+    { genre: 'Action1', sold: 120 },
+    { genre: 'Shooter1', sold: 350 },
+    { genre: 'Other1', sold: 150 },
+    { genre: 'Sports2', sold: 275 },
+    { genre: 'Strategy2', sold: 115 },
+    { genre: 'Action2', sold: 120 },
+    { genre: 'Shooter0', sold: 350 },
+    { genre: 'Other2', sold: 150 },
+    { genre: 'Sports3', sold: 275 },
+    { genre: 'Strategy3', sold: 115 },
+    { genre: 'Action3', sold: 120 },
+    { genre: 'Shooter3', sold: 350 },
+    { genre: 'Other3', sold: 150 },
+    { genre: 'Sports4', sold: 275 },
+    { genre: 'Strategy4', sold: 115 },
+    { genre: 'Action4', sold: 120 },
+    { genre: 'Shooter4', sold: 350 },
+    { genre: 'Other4', sold: 150 },
+    { genre: 'Sports5', sold: 275 },
+    { genre: 'Strategy6', sold: 115 },
+    { genre: 'Action6', sold: 120 },
+    { genre: 'Shooter6', sold: 350 },
+    { genre: 'Other6', sold: 150 },
+];
+//表格的数据
+const Bgdata = [
+    {dataInfo:'10.5.22.0',name:'itrade',type:'click',childType:'duankou',xiangqing:'端口：8050',datestart:'2018-1-1 22:22:22',dealdate:'2018-2-1 22:22:22',state:0,dealpeople:'李四',biangeng:5},
+    {dataInfo:'10.5.22.0',name:'itrade',type:'click',childType:'duankou',xiangqing:'端口：8050',datestart:'2018-1-1 22:22:22',dealdate:'2018-2-1 22:22:22',state:0,dealpeople:'李四',biangeng:5},
+    {dataInfo:'10.5.22.0',name:'itrade',type:'click',childType:'duankou',xiangqing:'端口：8050',datestart:'2018-1-1 22:22:22',dealdate:'2018-2-1 22:22:22',state:0,dealpeople:'李四',biangeng:5},
+    {dataInfo:'10.5.22.0',name:'itrade',type:'click',childType:'duankou',xiangqing:'端口：8050',datestart:'2018-1-1 22:22:22',dealdate:'2018-2-1 22:22:22',state:0,dealpeople:'李四',biangeng:5},
+    {dataInfo:'10.5.22.0',name:'itrade',type:'click',childType:'duankou',xiangqing:'端口：8050',datestart:'2018-1-1 22:22:22',dealdate:'2018-2-1 22:22:22',state:0,dealpeople:'李四',biangeng:5}
+];
+
+
 class ClickEventPage extends Component{
+
     constructor(props){
         super(props);
         this.state={
-            G2data:[],
-            Bgdata:[]
+            // G2data:[],
+            // Bgdata:[],
+            activeType:0,
+            typeColor:['#a00', '#0a0', '#b70'],
         }
     }
-    componentDidMount(){
-        let getG2Data=ajax('/array');
-        let getBgData=ajax('/bgdata');
-        Promise.all([getG2Data,getBgData])
-            .then(res=>{
-                this.setState({
-                    G2data:res[0].data,
-                    Bgdata:res[1].bgdata,
-                    typeColor:[
-                        '#a00',
-                        '#0a0',
-                        '#b70',
-                    ]
-                });
-                console.log(this.state);
-            });
-        console.log(this.state.data);
-    }
+    //这里注释的暂时都用不到了
+    // componentDidMount(){
+    //     let getG2Data=ajax('/array');
+    //     let getBgData=ajax('/bgdata');
+    //     if (this.state.Bgdata.length>0) return null;
+    //     Promise.all([getG2Data,getBgData])
+    //         .then(res=>{
+    //             this.setState({
+    //                 G2data:res[0].data,
+    //                 Bgdata:res[1].bgdata,
+    //                 typeColor:[
+    //                     '#a00',
+    //                     '#0a0',
+    //                     '#b70',
+    //                 ],
+    //                 activeType:0
+    //             });
+    //             console.log(this.state);
+    //         });
+    //     console.log(this.state.data);
+    // }
+    //
+    callback=(e) =>{
+        console.log(e.target.type);
+        let type=e.target.type
+        this.setState({
+            activeType:type
+        })
+    };
     render(){
-        console.log(this.data);
         return(
             <div>
-                <Tabs defaultActiveKey="1" onChange={callback}>
-                    <TabPane tab="Tab 1" key="1"/>
-                    <TabPane tab="Tab 2" key="2"/>
-                    <TabPane tab="Tab 3" key="3"/>
-                </Tabs>
+                <ul className={'select'}>
+                    <li className={this.state.activeType==0?'active':''} type={0} onClick={this.callback}>选择全部</li>
+                    <li className={this.state.activeType==1?'active':''} type={1} onClick={this.callback}>端口告警类型</li>
+                    <li className={this.state.activeType==2?'active':''} type={2} onClick={this.callback}>CPU告警类型</li>
+                    <li className={this.state.activeType==3?'active':''} type={3} onClick={this.callback}>内存告警类型</li>
+                    <li className={this.state.activeType==4?'active':''} type={4} onClick={this.callback}>事件子类型D</li>
+                    <li className={this.state.activeType==5?'active':''} type={5} onClick={this.callback}>事件子类型E</li>
+                </ul>
                 <p>近一个小时</p>
 
-                {this.state.G2data?<Tubiao1 data={this.state.G2data}/>: <div>加载中。。。</div> }
+                {/*这里改一下*/}
+                {/*{this.state.G2data?<Tubiao1 data={G2data}/>: <div>加载中。。。</div> }*/}
+                <Tubiao1 data={G2data}/>
                 <ul className={'menu'}>
                     <li style={{flex:1}}>告警对象信息<Icon type="filter" theme="outlined" style={{fontSize:'20px'}}/></li>
                     <li style={{flex:1}}>应用名</li>
@@ -61,9 +120,9 @@ class ClickEventPage extends Component{
                     <li style={{flex:1}}>操作</li>
                 </ul>
 
-                {/*循环数据渲染界面*/}
+                {/*循环数据渲染界面(这里也改了)*/}
                 {
-                    this.state.Bgdata.map((data,index) =>{
+                    Bgdata.map((data,index) =>{
                         return(
                             <ul key={index} className={'bgData'}>
                                 <li style={{flex:1,borderLeftColor:this.state.typeColor[0]}}>{data.dataInfo}</li>
@@ -85,5 +144,8 @@ class ClickEventPage extends Component{
         )
     }
 }
+
+
+
 export default ClickEventPage;
 

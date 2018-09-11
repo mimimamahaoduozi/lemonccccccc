@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Chart, Tooltip, Axis, Bar } from 'viser-react';
+
 const scale = [{
     dataKey: 'sales',
     tickInterval: 1,
@@ -9,9 +10,6 @@ const scale = [{
     dataKey: 'genre',
 }];
 class Tubiao1 extends Component{
-    componentWillReceiveProps(){
-        console.log('aaaaaaaaaa')
-    }
     render(){
         return (
             <div>
