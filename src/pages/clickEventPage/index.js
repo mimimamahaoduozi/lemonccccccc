@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {Icon} from 'antd'
 import Tubiao1 from '../../components/tubiao'
+import Tubiao2 from '../../components/tubiao2'
 
 // import ajax from '../../api/fetch'
 import './index.css'
@@ -106,6 +107,7 @@ class ClickEventPage extends Component{
                 {/*这里改一下*/}
                 {/*{this.state.G2data?<Tubiao1 data={G2data}/>: <div>加载中。。。</div> }*/}
                 <Tubiao1 data={G2data}/>
+                <Tubiao2 data={G2data}/>
                 <ul className={'menu'}>
                     <li style={{flex:1}}>告警对象信息<Icon type="filter" theme="outlined" style={{fontSize:'20px'}}/></li>
                     <li style={{flex:1}}>应用名</li>
