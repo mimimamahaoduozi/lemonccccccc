@@ -35,6 +35,11 @@
 .select>li{
     padding: 10px 20px;
     cursor: pointer;
+    border-bottom: 2px solid #fff;
+    -webkit-user-select:none;
+    -moz-user-select:none;
+    -ms-user-select:none;
+    user-select:none;
 }
 .select>li.active{
     color: #1890ff;

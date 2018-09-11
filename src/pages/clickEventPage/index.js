@@ -43,11 +43,11 @@ const G2data=[
 ];
 //表格的数据
 const Bgdata = [
-    {dataInfo:'10.5.22.0',name:'itrade',type:'click',childType:'duankou',xiangqing:'端口：8050',datestart:'2018-1-1 22:22:22',dealdate:'2018-2-1 22:22:22',state:0,dealpeople:'李四',biangeng:5},
-    {dataInfo:'10.5.22.0',name:'itrade',type:'click',childType:'duankou',xiangqing:'端口：8050',datestart:'2018-1-1 22:22:22',dealdate:'2018-2-1 22:22:22',state:0,dealpeople:'李四',biangeng:5},
-    {dataInfo:'10.5.22.0',name:'itrade',type:'click',childType:'duankou',xiangqing:'端口：8050',datestart:'2018-1-1 22:22:22',dealdate:'2018-2-1 22:22:22',state:0,dealpeople:'李四',biangeng:5},
-    {dataInfo:'10.5.22.0',name:'itrade',type:'click',childType:'duankou',xiangqing:'端口：8050',datestart:'2018-1-1 22:22:22',dealdate:'2018-2-1 22:22:22',state:0,dealpeople:'李四',biangeng:5},
-    {dataInfo:'10.5.22.0',name:'itrade',type:'click',childType:'duankou',xiangqing:'端口：8050',datestart:'2018-1-1 22:22:22',dealdate:'2018-2-1 22:22:22',state:0,dealpeople:'李四',biangeng:5}
+    {dataInfo:'10.5.22.0',name:'itrade',type:'click',childType:'duankou',xiangqing:'端口：8050',datestart:'2018-1-1 22:22:22',dealdate:'2018-2-1 22:22:22',state:0,dealpeople:'李四',biangeng:5,activeType:1},
+    {dataInfo:'10.5.22.0',name:'itrade',type:'click',childType:'duankou',xiangqing:'端口：8050',datestart:'2018-1-1 22:22:22',dealdate:'2018-2-1 22:22:22',state:0,dealpeople:'李四',biangeng:5,activeType:2},
+    {dataInfo:'10.5.22.0',name:'itrade',type:'click',childType:'duankou',xiangqing:'端口：8050',datestart:'2018-1-1 22:22:22',dealdate:'2018-2-1 22:22:22',state:0,dealpeople:'李四',biangeng:5,activeType:3},
+    {dataInfo:'10.5.22.0',name:'itrade',type:'click',childType:'duankou',xiangqing:'端口：8050',datestart:'2018-1-1 22:22:22',dealdate:'2018-2-1 22:22:22',state:0,dealpeople:'李四',biangeng:5,activeType:4},
+    {dataInfo:'10.5.22.0',name:'itrade',type:'click',childType:'duankou',xiangqing:'端口：8050',datestart:'2018-1-1 22:22:22',dealdate:'2018-2-1 22:22:22',state:0,dealpeople:'李四',biangeng:5,activeType:5}
 ];
 
 
@@ -58,7 +58,7 @@ class ClickEventPage extends Component{
         this.state={
             // G2data:[],
             // Bgdata:[],
-            activeType:0,
+            activeType:[],
             typeColor:['#a00', '#0a0', '#b70'],
         }
     }
@@ -86,27 +86,61 @@ class ClickEventPage extends Component{
     //
     callback=(e) =>{
         console.log(e.target.type);
-        let type=e.target.type
-        this.setState({
-            activeType:type
-        })
+        let type=parseInt(e.target.type)
+        if (type === 0) {
+
+            if (this.state.activeType.indexOf(type)>=0) {
+                this.setState({
+                    activeType:[]
+                })
+            }else{
+                this.setState({
+                    activeType:[0]
+                })
+            }
+        }else {
+            if (this.state.activeType.indexOf(type)>=0) {
+                this.state.activeType.pop(type)
+                this.setState({
+                    activeType:this.state.activeType
+                })
+            }else{
+                this.setState({
+                    activeType:Array.from(new Set([...this.state.activeType,type]))
+                })
+            }
+        }
     };
     render(){
         return(
             <div>
                 <ul className={'select'}>
-                    <li className={this.state.activeType==0?'active':''} type={0} onClick={this.callback}>选择全部</li>
-                    <li className={this.state.activeType==1?'active':''} type={1} onClick={this.callback}>端口告警类型</li>
-                    <li className={this.state.activeType==2?'active':''} type={2} onClick={this.callback}>CPU告警类型</li>
-                    <li className={this.state.activeType==3?'active':''} type={3} onClick={this.callback}>内存告警类型</li>
-                    <li className={this.state.activeType==4?'active':''} type={4} onClick={this.callback}>事件子类型D</li>
-                    <li className={this.state.activeType==5?'active':''} type={5} onClick={this.callback}>事件子类型E</li>
+                    <li className={this.state.activeType.indexOf(0)>=0?'active':''} type={0} onClick={this.callback}>选择全部</li>
+                    <li
+                        className={this.state.activeType.indexOf(1)>=0||this.state.activeType.indexOf(0)>=0?'active':''}
+                        type={1} onClick={this.callback}
+                    >端口告警类型</li>
+                    <li
+                        className={this.state.activeType.indexOf(2)>=0||this.state.activeType.indexOf(0)>=0?'active':''}
+                        type={2} onClick={this.callback}
+                    >CPU告警类型</li>
+                    <li
+                        className={this.state.activeType.indexOf(3)>=0||this.state.activeType.indexOf(0)>=0?'active':''}
+                        type={3} onClick={this.callback}
+                    >内存告警类型</li>
+                    <li
+                        className={this.state.activeType.indexOf(4)>=0||this.state.activeType.indexOf(0)>=0?'active':''}
+                        type={4} onClick={this.callback}
+                    >事件子类型D</li>
+                    <li
+                        className={this.state.activeType.indexOf(5)>=0||this.state.activeType.indexOf(0)>=0?'active':''}
+                        type={5} onClick={this.callback}
+                    >事件子类型E</li>
                 </ul>
                 <p>近一个小时</p>
 
                 {/*这里改一下*/}
                 {/*{this.state.G2data?<Tubiao1 data={G2data}/>: <div>加载中。。。</div> }*/}
-                <Tubiao1 data={G2data}/>
                 <Tubiao2 data={G2data}/>
                 <ul className={'menu'}>
                     <li style={{flex:1}}>告警对象信息<Icon type="filter" theme="outlined" style={{fontSize:'20px'}}/></li>
@@ -126,6 +160,7 @@ class ClickEventPage extends Component{
                 {
                     Bgdata.map((data,index) =>{
                         return(
+                            this.state.activeType.indexOf(data.activeType)>=0||this.state.activeType.indexOf(0)>=0?
                             <ul key={index} className={'bgData'}>
                                 <li style={{flex:1,borderLeftColor:this.state.typeColor[0]}}>{data.dataInfo}</li>
                                 <li style={{flex:1}}>{data.name}</li>
@@ -138,7 +173,7 @@ class ClickEventPage extends Component{
                                 <li style={{flex:1}}>{data.dealpeople}</li>
                                 <li style={{flex:1}}>{data.biangeng}</li>
                                 <li style={{flex:1}}>{data.name}</li>
-                            </ul>
+                            </ul>:null
                         )
                     })
                 }
