@@ -1,12 +1,104 @@
 import React, { Component } from 'react';
-import {Icon} from 'antd'
-import Tubiao1 from '../../components/tubiao'
+import { Table} from 'antd'
 import Tubiao2 from '../../components/tubiao2'
 
 // import ajax from '../../api/fetch'
 import './index.css'
 
-// require('../../mock');
+
+//改变时间样式
+Date.prototype.toLocaleString = function() {
+    return this.getFullYear() + "-" + (this.getMonth() + 1) + "-" + this.getDate() + " " + this.getHours() + ":" + this.getMinutes() + ":" + this.getSeconds();
+};
+
+//定义表格形态
+const columns = [
+    {
+        title: '告警对象信息',
+        dataIndex: 'alarmRate',
+        filters: [{
+            text: 'Joe',
+            value: 'Joe',
+        }, {
+            text: 'Jim',
+            value: 'Jim',
+        }],
+        onFilter: (value, record) => record.name.indexOf(value) === 0,
+    },
+    {
+        title: '应用名',
+        dataIndex: 'appName',
+        filters: [{
+            text: 'Joe',
+            value: 'Joe',
+        }, {
+            text: 'Jim',
+            value: 'Jim',
+        }],
+        onFilter: (value, record) => record.name.indexOf(value) === 0,
+    },
+    {
+        title: '告警类型',
+        dataIndex: 'type',
+        defaultSortOrder: 'descend',
+        sorter: (a, b) => a.age - b.age,
+    },
+    {
+        title: '告警子类型',
+        dataIndex: 'subType',
+        filters: [{
+            text: 'Joe',
+            value: 'Joe',
+        }, {
+            text: 'Jim',
+            value: 'Jim',
+        }],
+        onFilter: (value, record) => record.name.indexOf(value) === 0,
+    },
+    {
+        title: '告警详情',
+        dataIndex: 'eventDetail',
+    },
+    {
+        title: '告警开始时间',
+        dataIndex: 'gmtCreate',
+        defaultSortOrder: 'descend',
+        sorter: (a, b) => a.age - b.age,
+        render: (a) => new Date(a).toLocaleString()
+    },
+    {
+        title: '告警处理时间',
+        dataIndex: 'gmtOccur',
+        defaultSortOrder: 'descend',
+        sorter: (a, b) => a.age - b.age,
+        render: (a) => new Date(a).toLocaleString()
+    },
+    {
+        title: '告警状态',
+        dataIndex: 'eventStatus',
+        filters: [{
+            text: 'Joe',
+            value: 'Joe',
+        }, {
+            text: 'Jim',
+            value: 'Jim',
+        }],
+        onFilter: (value, record) => record.name.indexOf(value) === 0,
+    },
+    {
+        title: '告警处理人',
+        dataIndex: 'operator',
+    },
+    {
+        title: '相关变更',
+        dataIndex: 'address',
+    },
+    {
+        title: '操作',
+        dataIndex: 'address',
+    }
+
+];
 
 //图表的数据
 const G2data=[
@@ -43,11 +135,11 @@ const G2data=[
 ];
 //表格的数据
 const Bgdata = [
-    {dataInfo:'10.5.22.0',name:'itrade',type:'click',childType:'duankou',xiangqing:'端口：8050',datestart:'2018-1-1 22:22:22',dealdate:'2018-2-1 22:22:22',state:0,dealpeople:'李四',biangeng:5,activeType:1},
-    {dataInfo:'10.5.22.0',name:'itrade',type:'click',childType:'duankou',xiangqing:'端口：8050',datestart:'2018-1-1 22:22:22',dealdate:'2018-2-1 22:22:22',state:0,dealpeople:'李四',biangeng:5,activeType:2},
-    {dataInfo:'10.5.22.0',name:'itrade',type:'click',childType:'duankou',xiangqing:'端口：8050',datestart:'2018-1-1 22:22:22',dealdate:'2018-2-1 22:22:22',state:0,dealpeople:'李四',biangeng:5,activeType:3},
-    {dataInfo:'10.5.22.0',name:'itrade',type:'click',childType:'duankou',xiangqing:'端口：8050',datestart:'2018-1-1 22:22:22',dealdate:'2018-2-1 22:22:22',state:0,dealpeople:'李四',biangeng:5,activeType:4},
-    {dataInfo:'10.5.22.0',name:'itrade',type:'click',childType:'duankou',xiangqing:'端口：8050',datestart:'2018-1-1 22:22:22',dealdate:'2018-2-1 22:22:22',state:0,dealpeople:'李四',biangeng:5,activeType:5}
+    {alarmRate:'10.5.22.0',appName:'itrade',type:'click',subType:'duankou',eventDetail:'端口：8050',gmtCreate:1536711453431,gmtOccur:1536711437435,eventStatus:0,operator:'李四',biangeng:5,activeType:1},
+    {alarmRate:'10.5.22.0',appName:'itrade',type:'click',subType:'duankou',eventDetail:'端口：8050',gmtCreate:1536711443431,gmtOccur:1536711436431,eventStatus:0,operator:'李四',biangeng:5,activeType:2},
+    {alarmRate:'10.5.22.0',appName:'itrade',type:'click',subType:'duankou',eventDetail:'端口：8050',gmtCreate:1536711433431,gmtOccur:1536711435431,eventStatus:0,operator:'李四',biangeng:5,activeType:3},
+    {alarmRate:'10.5.22.0',appName:'itrade',type:'click',subType:'duankou',eventDetail:'端口：8050',gmtCreate:1536711423431,gmtOccur:1536711434431,eventStatus:0,operator:'李四',biangeng:5,activeType:4},
+    {alarmRate:'10.5.22.0',appName:'itrade',type:'click',subType:'duankou',eventDetail:'端口：8050',gmtCreate:1536711413431,gmtOccur:1536711433431,eventStatus:0,operator:'李四',biangeng:5,activeType:5}
 ];
 
 
@@ -62,6 +154,7 @@ class ClickEventPage extends Component{
             typeColor:['#a00', '#0a0', '#b70'],
         }
     }
+
     //这里注释的暂时都用不到了
     // componentDidMount(){
     //     let getG2Data=ajax('/array');
@@ -84,6 +177,14 @@ class ClickEventPage extends Component{
     //     console.log(this.state.data);
     // }
     //
+
+
+    //表格change
+    onChange=(pagination, filters, sorter) => {
+        console.log('params', pagination, filters, sorter);
+    };
+
+    //选择类型
     callback=(e) =>{
         console.log(e.target.type);
         let type=parseInt(e.target.type)
@@ -98,7 +199,7 @@ class ClickEventPage extends Component{
                     activeType:[0]
                 })
             }
-        }else {
+        } else {
             if (this.state.activeType.indexOf(type)>=0) {
                 this.state.activeType.pop(type)
                 this.setState({
@@ -119,7 +220,7 @@ class ClickEventPage extends Component{
                     <li
                         className={this.state.activeType.indexOf(1)>=0||this.state.activeType.indexOf(0)>=0?'active':''}
                         type={1} onClick={this.callback}
-                    >端口告警类型</li>
+                    >口告警类型</li>
                     <li
                         className={this.state.activeType.indexOf(2)>=0||this.state.activeType.indexOf(0)>=0?'active':''}
                         type={2} onClick={this.callback}
@@ -138,45 +239,8 @@ class ClickEventPage extends Component{
                     >事件子类型E</li>
                 </ul>
                 <p>近一个小时</p>
-
-                {/*这里改一下*/}
-                {/*{this.state.G2data?<Tubiao1 data={G2data}/>: <div>加载中。。。</div> }*/}
                 <Tubiao2 data={G2data}/>
-                <ul className={'menu'}>
-                    <li style={{flex:1}}>告警对象信息<Icon type="filter" theme="outlined" style={{fontSize:'20px'}}/></li>
-                    <li style={{flex:1}}>应用名</li>
-                    <li style={{flex:1}}>告警类型</li>
-                    <li style={{flex:1}}>告警子类型</li>
-                    <li style={{flex:1}}>告警详情</li>
-                    <li style={{flex:1}}>告警开始时间</li>
-                    <li style={{flex:1}}>告警处理时间</li>
-                    <li style={{flex:1}}>告警状态</li>
-                    <li style={{flex:1}}>告警处理人</li>
-                    <li style={{flex:1}}>相关变更</li>
-                    <li style={{flex:1}}>操作</li>
-                </ul>
-
-                {/*循环数据渲染界面(这里也改了)*/}
-                {
-                    Bgdata.map((data,index) =>{
-                        return(
-                            this.state.activeType.indexOf(data.activeType)>=0||this.state.activeType.indexOf(0)>=0?
-                            <ul key={index} className={'bgData'}>
-                                <li style={{flex:1,borderLeftColor:this.state.typeColor[0]}}>{data.dataInfo}</li>
-                                <li style={{flex:1}}>{data.name}</li>
-                                <li style={{flex:1}}>{data.type}</li>
-                                <li style={{flex:1}}>{data.childType}</li>
-                                <li style={{flex:1}}>{data.xiangqing}</li>
-                                <li style={{flex:1}}>{data.datestart}</li>
-                                <li style={{flex:1}}>{data.dealdate}</li>
-                                <li style={{flex:1}}>{data.state}</li>
-                                <li style={{flex:1}}>{data.dealpeople}</li>
-                                <li style={{flex:1}}>{data.biangeng}</li>
-                                <li style={{flex:1}}>{data.name}</li>
-                            </ul>:null
-                        )
-                    })
-                }
+                <Table columns={columns} dataSource={Bgdata} onChange={this.onChange} />,
             </div>
         )
     }

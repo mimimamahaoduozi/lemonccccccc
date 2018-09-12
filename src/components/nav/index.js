@@ -1,18 +1,38 @@
 import React, { Component } from 'react';
-import { Menu, Icon, DatePicker ,Button,TimePicker} from 'antd';
+import { Menu, Icon, DatePicker ,Button,TimePicker,Modal,Input} from 'antd';
 import moment from 'moment';
-
 import 'antd/dist/antd.min.css';
-import {Link} from 'react-router-dom'
+import {BrowserRouter as Router, Link, Route} from 'react-router-dom'
 import './index.css'
 
 const dateFormat = 'YYYY/MM/DD';
 class Nav extends Component{
     constructor(props){
-        super(props)
+        super(props);
         this.state = {
             value: null,
+            visible: false
         };
+    }
+
+    showModal = () => {
+        this.setState({
+            visible: true,
+        });
+    }
+
+    handleOk = (e) => {
+        console.log(e);
+        this.setState({
+            visible: false,
+        });
+    }
+
+    handleCancel = (e) => {
+        console.log(e);
+        this.setState({
+            visible: false,
+        });
     }
 
     onChange = (time) => {
@@ -42,7 +62,17 @@ class Nav extends Component{
                             <Link to={'/click'}><h3>其他自定义事件</h3></Link>
                         </Menu.Item>
                     </Menu>
-                    <Link to={'/'}><Icon type="plus-square" style={{fontSize:'24px'}}/></Link>
+                    <a onClick={this.showModal}><Icon type="plus-square" style={{fontSize:'24px'}} /></a>
+
+                    <Modal
+                        title="添加事件"
+                        visible={this.state.visible}
+                        onOk={this.handleOk}
+                        onCancel={this.handleCancel}
+                    >
+                        <Input placeholder="事件名" style={{marginBottom:'20px'}}/>
+                        <Input placeholder="啥啥啥" />
+                    </Modal>
                 </div>
                 <div  className={'selectDate'}>
                     <span >选择时间：<DatePicker defaultValue={moment('2015/01/01', dateFormat)} format={dateFormat} /></span>

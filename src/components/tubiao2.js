@@ -7,7 +7,7 @@ class Tubiao2 extends Component{
         var chart = new G2.Chart({
             container: 'mountNode',
             forceFit: true,
-            height: 200,
+            height: 100,
             padding:[ 0,0,0,0]
         });
         chart.source(this.props.data);

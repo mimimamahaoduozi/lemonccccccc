@@ -40,6 +40,7 @@
     -moz-user-select:none;
     -ms-user-select:none;
     user-select:none;
+    list-style: none;
 }
 .select>li.active{
     color: #1890ff;
