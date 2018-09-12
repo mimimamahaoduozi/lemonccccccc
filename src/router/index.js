@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import ClickEventPage from '../pages/clickEventPage/index'
-import Nav from '../components/nav'
-import Click from '../pages/click'
+import ClickEventPage from '../clickEventPage/index'
 class Routers extends Component{
     render(){
         // console.log(this.props.match.url);
@@ -12,14 +10,6 @@ class Routers extends Component{
                         <ClickEventPage/>
                     </div>
 
-                );
-            case '/ziye':
-                return(
-                    <Nav/>
-                );
-            case '/click':
-                return(
-                    <Click/>
                 );
             default:
                 return (

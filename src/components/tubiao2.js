@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+
 // import createG2 from 'g2-react';
 import G2 from '@antv/g2'
 
