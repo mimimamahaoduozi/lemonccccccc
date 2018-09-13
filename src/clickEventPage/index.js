@@ -1,10 +1,18 @@
 import React, { Component } from 'react';
 import { Table,Menu, Icon, DatePicker ,Button,TimePicker,Modal,Input} from 'antd'
+import { Chart, Tooltip, Geom } from 'bizcharts'
 import Tubiao2 from '../components/tubiao2'
 import moment from 'moment';
 import 'antd/dist/antd.min.css'
 // import ajax from '../../api/fetch'
 import './index.css'
+
+
+//图标使用的
+const scale = {
+    month: {alias: 'Month',},
+    count: {alias: 'Sales',},
+};
 
 const dateFormat = 'YYYY/MM/DD';
 //改变时间样式
@@ -358,7 +366,10 @@ class ClickEventPage extends Component{
                     >事件子类型E</li>
                 </ul>
                 <p>近一个小时</p>
-                <Tubiao2 data={this.state.G2data}/>
+                <Chart height={400} data={this.state.G2data} scale={scale} forceFit position={[0,0,0,0]}>
+                    <Tooltip crosshairs={{ type: 'rect' }} />
+                    <Geom type="interval" position="date*value" color="month" />
+                </Chart>
                 <Table
                     columns={columns} dataSource={this.state.showBgdata} onChange={this.onChange}
                 />,
