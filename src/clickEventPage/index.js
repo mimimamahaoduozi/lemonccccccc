@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Table,Menu, Icon, DatePicker ,Button,TimePicker,Modal,Input} from 'antd'
 import { Chart, Tooltip, Geom } from 'bizcharts'
-import Tubiao2 from '../components/tubiao2'
 import moment from 'moment';
 import 'antd/dist/antd.min.css'
 // import ajax from '../../api/fetch'
@@ -174,6 +173,10 @@ class ClickEventPage extends Component{
             //下面是导航的
             value: null,
             visible: false,
+
+            //当前时间
+            time:new Date().getTime()
+
         };
         window._state=this.state
     }
@@ -263,11 +266,14 @@ class ClickEventPage extends Component{
         });
     };
 
-    //图表发生改变
-    onChange = (time) => {
-        console.log(time);
-        this.setState({ value: time });
-        console.log(window._state);
+    //时间选择框发生改变
+    onTimeChange = (time) => {
+        let setTime=new Date(time._d).getTime()
+        console.log(typeof setTime);
+        console.log(this.state);
+        this.setState({
+            time:setTime
+        });
     };
 
     //改变当前事件类型
@@ -336,9 +342,11 @@ class ClickEventPage extends Component{
                             <Input placeholder="啥啥啥" />
                         </Modal>
                     </div>
+                    
+                    {/*时间选择器*/}
                     <div  className={'selectDate'}>
-                        <span >选择时间：<DatePicker defaultValue={moment('2015/01/01', dateFormat)} format={dateFormat} /></span>
-                        <span> <TimePicker value={this.state.value} onChange={this.onChange} /></span>
+                        <span >选择时间：<DatePicker  format={dateFormat} onChange={this.onTimeChange}/></span>
+                        <span> <TimePicker value={this.state.value} onChange={this.onTimeChange} /></span>
                         <span><Button type="primary">回放</Button></span>
                     </div>
                 </div>
@@ -366,9 +374,12 @@ class ClickEventPage extends Component{
                     >事件子类型E</li>
                 </ul>
                 <p>近一个小时</p>
-                <Chart height={400} data={this.state.G2data} scale={scale} forceFit position={[0,0,0,0]}>
+
+                {/* *******图表********* */}
+
+                <Chart height={100} data={this.state.G2data} scale={scale} forceFit padding={[0,0,0,0]}>
                     <Tooltip crosshairs={{ type: 'rect' }} />
-                    <Geom type="interval" position="date*value" color="month" />
+                    <Geom type="interval" position="date*value" color="month"/>
                 </Chart>
                 <Table
                     columns={columns} dataSource={this.state.showBgdata} onChange={this.onChange}
