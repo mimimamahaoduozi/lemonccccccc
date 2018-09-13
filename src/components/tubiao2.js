@@ -1,26 +1,17 @@
 import React, { Component } from 'react';
 
-// import createG2 from 'g2-react';
-import G2 from '@antv/g2'
-
+import { Chart, Tooltip, Geom } from 'bizcharts'
+const scale = {
+    month: {alias: 'Month',},
+    count: {alias: 'Sales',},
+};
 class Tubiao2 extends Component{
-    componentDidMount(){
-        var chart = new G2.Chart({
-            container: 'mountNode',
-            forceFit: true,
-            height: 100,
-            padding:[ 0,0,0,0]
-        });
-        chart.source(this.props.data);
-        chart.scale('sales', {
-            tickInterval: 10
-        });
-        chart.interval().position('genre*sold').color('#0a0');
-        chart.render();
-    }
     render(){
         return(
-            <div id="mountNode"></div>
+            <Chart height={400} data={this.props.data} scale={scale} forceFit position={[0,0,0,0]}>
+                <Tooltip crosshairs={{ type: 'rect' }} />
+                <Geom type="interval" position="date*value" color="month" />
+            </Chart>
         )
     }
 }

@@ -118,38 +118,26 @@ const columns = [
 ];
 
 //图表的数据
-const G2data=[
-    { genre: 'Sports', sold: 275 ,},
-    { genre: 'Strategy', sold: 115 },
-    { genre: 'Action', sold: 120 },
-    { genre: 'Shooter2', sold: 350 },
-    { genre: 'Other', sold: 150 },
-    { genre: 'Sports1', sold: 275 },
-    { genre: 'Strategy1', sold: 115 },
-    { genre: 'Action1', sold: 120 },
-    { genre: 'Shooter1', sold: 350 },
-    { genre: 'Other1', sold: 150 },
-    { genre: 'Sports2', sold: 275 },
-    { genre: 'Strategy2', sold: 115 },
-    { genre: 'Action2', sold: 120 },
-    { genre: 'Shooter0', sold: 350 },
-    { genre: 'Other2', sold: 150 },
-    { genre: 'Sports3', sold: 275 },
-    { genre: 'Strategy3', sold: 115 },
-    { genre: 'Action3', sold: 120 },
-    { genre: 'Shooter3', sold: 350 },
-    { genre: 'Other3', sold: 150 },
-    { genre: 'Sports4', sold: 275 },
-    { genre: 'Strategy4', sold: 115 },
-    { genre: 'Action4', sold: 120 },
-    { genre: 'Shooter4', sold: 350 },
-    { genre: 'Other4', sold: 150 },
-    { genre: 'Sports5', sold: 275 },
-    { genre: 'Strategy6', sold: 115 },
-    { genre: 'Action6', sold: 120 },
-    { genre: 'Shooter6', sold: 350 },
-    { genre: 'Other6', sold: 150 },
-];
+const G2data={
+    '1231243423401':213,
+    '1231243423402':213,
+    '1231243423403':231,
+    '1231243423404':233,
+    '1231243423405':353,
+    '1231243423406':123,
+    '1231243423407':123,
+    '1231243423408':123,
+    '1231243423409':234,
+    '1231243423410':345,
+    '1231243423411':123,
+    '1231243423412':234,
+    '1231243423413':123,
+    '1231243423414':234,
+    '1231243423415':123,
+    '1231243423416':234,
+    '1231243423417':123,
+    '1231243423418':123,
+};
 //表格的数据
 const Bgdata = [
     {alarmRate:'10.5.22.0',appName:'itrade',type:'click',subType:'duankou',eventDetail:'端口：8050',gmtCreate:1536711453431,gmtOccur:1536711437435,eventStatus:0,operator:'李四',biangeng:5,activeType:1},
@@ -165,9 +153,11 @@ class ClickEventPage extends Component{
     constructor(props){
         super(props);
         this.state={
+            //当前事件类型
+            eventType:'',
 
-            // 数据的
-            // G2data:[],
+            // 数据的(以后通过ajax获取的数据放在这里)
+            G2data:[],
             // Bgdata:[],
             activeType:[],
             showBgdata:[],
@@ -176,8 +166,8 @@ class ClickEventPage extends Component{
             //下面是导航的
             value: null,
             visible: false,
-
-        }
+        };
+        window._state=this.state
     }
 
     //这里注释的暂时都用不到了
@@ -205,9 +195,9 @@ class ClickEventPage extends Component{
 
 
     //表格change
-    onChange=(pagination, filters, sorter) => {
-        console.log('params', pagination, filters, sorter);
-    };
+    // onChange=(pagination, filters, sorter) => {
+    //     console.log('params', pagination, filters, sorter);
+    // };
 
     //选择类型
     callback=(e) =>{
@@ -247,7 +237,7 @@ class ClickEventPage extends Component{
         this.setState({
             visible: true,
         });
-    }
+    };
 
     //模态框点了确定
     handleOk = (e) => {
@@ -255,7 +245,7 @@ class ClickEventPage extends Component{
         this.setState({
             visible: false,
         });
-    }
+    };
 
     //模态框点了取消
     handleCancel = (e) => {
@@ -263,14 +253,22 @@ class ClickEventPage extends Component{
         this.setState({
             visible: false,
         });
-    }
+    };
 
     //图表发生改变
     onChange = (time) => {
         console.log(time);
         this.setState({ value: time });
+        console.log(window._state);
     };
 
+    //改变当前事件类型
+    changeEventType = (e) =>{
+        // console.log(e.key);
+        this.setState({
+            eventType:e.key.toString()
+        })
+    };
     componentDidMount(){
         //改变showBgdata
         //     switch (this.state.) {
@@ -281,6 +279,16 @@ class ClickEventPage extends Component{
         //                 return this.state.showBgdata=a.activeType == index;
         //             })
         //     }
+        let newG2Data=[];
+        for (let key in G2data) {
+            newG2Data.push({
+                date:key,
+                value:G2data[key]
+            })
+        }
+        this.setState({
+            G2data:newG2Data
+        })
     }
     render(){
         return(
@@ -291,24 +299,25 @@ class ClickEventPage extends Component{
                         <Menu
                             mode="horizontal"
                         >
-                            <Menu.Item key="mail">
+                            <Menu.Item key="mail"  onClick={this.changeEventType}>
                                 <h3>全部告警</h3>
                             </Menu.Item>
-                            <Menu.Item key="app">
+                            <Menu.Item key="app" onClick={this.changeEventType}>
                                 <h3>单击事件</h3>
                             </Menu.Item>
-                            <Menu.Item key="jiaoyi">
+                            <Menu.Item key="jiaoyi" onClick={this.changeEventType}>
                                 <h3>交易事件</h3>
                             </Menu.Item>
-                            <Menu.Item key="huabei">
+                            <Menu.Item key="huabei" onClick={this.changeEventType}>
                                 <h3>基础设施事件</h3>
                             </Menu.Item>
-                            <Menu.Item key="alipay">
+                            <Menu.Item key="alipay" onClick={this.changeEventType}>
                                 <h3>其他自定义事件</h3>
                             </Menu.Item>
                         </Menu>
                         <a onClick={this.showModal}><Icon type="plus-square" style={{fontSize:'24px'}} /></a>
 
+                        {/*模态框*/}
                         <Modal
                             title="添加事件"
                             visible={this.state.visible}
@@ -349,7 +358,7 @@ class ClickEventPage extends Component{
                     >事件子类型E</li>
                 </ul>
                 <p>近一个小时</p>
-                <Tubiao2 data={G2data}/>
+                <Tubiao2 data={this.state.G2data}/>
                 <Table
                     columns={columns} dataSource={this.state.showBgdata} onChange={this.onChange}
                 />,
