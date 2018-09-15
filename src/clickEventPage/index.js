@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { Table,Menu, Icon, DatePicker ,Button,TimePicker,Modal,Input} from 'antd'
 import { Chart, Tooltip, Geom } from 'bizcharts'
-import moment from 'moment';
 import 'antd/dist/antd.min.css'
-// import ajax from '../../api/fetch'
+import {getBgdata,getG2data} from '../api/index'
 import './index.css'
 
-
+//使用Mock
+require('../mock');
 //图标使用的
 const scale = {
     month: {alias: 'Month',},
@@ -16,8 +16,6 @@ const scale = {
 const dateFormat = 'YYYY/MM/DD';
 //改变时间样式
 Date.prototype.toLocaleString = function() {
-    let year=this.getFullYear(),
-        mouth=this.getMonth() + 1;
     return this.getFullYear() + "-" + (this.getMonth() + 1) + "-" + this.getDate() + " " + this.getHours() + ":" + this.getMinutes() + ":" + this.getSeconds();
 };
 
@@ -26,7 +24,7 @@ const typeColor=[
     '#a00',
     '#0a0',
     '#b70',
-]
+];
 
 //定义表格形态
 const columns = [
@@ -124,35 +122,37 @@ const columns = [
 
 ];
 
-//图表的数据
-const G2data={
-    '1231243423401':213,
-    '1231243423402':213,
-    '1231243423403':231,
-    '1231243423404':233,
-    '1231243423405':353,
-    '1231243423406':123,
-    '1231243423407':123,
-    '1231243423408':123,
-    '1231243423409':234,
-    '1231243423410':345,
-    '1231243423411':123,
-    '1231243423412':234,
-    '1231243423413':123,
-    '1231243423414':234,
-    '1231243423415':123,
-    '1231243423416':234,
-    '1231243423417':123,
-    '1231243423418':123,
-};
-//表格的数据
-const Bgdata = [
-    {alarmRate:'10.5.22.0',appName:'itrade',type:'click',subType:'duankou',eventDetail:'端口：8050',gmtCreate:1536711453431,gmtOccur:1536711437435,eventStatus:0,operator:'李四',biangeng:5,activeType:1},
-    {alarmRate:'10.5.22.0',appName:'itrade',type:'click',subType:'duankou',eventDetail:'端口：8050',gmtCreate:1536711443431,gmtOccur:1536711436431,eventStatus:0,operator:'李四',biangeng:5,activeType:2},
-    {alarmRate:'10.5.22.0',appName:'itrade',type:'click',subType:'duankou',eventDetail:'端口：8050',gmtCreate:1536711433431,gmtOccur:1536711435431,eventStatus:0,operator:'李四',biangeng:5,activeType:3},
-    {alarmRate:'10.5.22.0',appName:'itrade',type:'click',subType:'duankou',eventDetail:'端口：8050',gmtCreate:1536711423431,gmtOccur:1536711434431,eventStatus:0,operator:'李四',biangeng:5,activeType:4},
-    {alarmRate:'10.5.22.0',appName:'itrade',type:'click',subType:'duankou',eventDetail:'端口：8050',gmtCreate:1536711413431,gmtOccur:1536711433431,eventStatus:0,operator:'李四',biangeng:5,activeType:5}
-];
+
+// //假数据
+//         //图表的数据
+//         const G2data={
+//         '1231243423401':213,
+//         '1231243423402':213,
+//         '1231243423403':231,
+//         '1231243423404':233,
+//         '1231243423405':353,
+//         '1231243423406':123,
+//         '1231243423407':123,
+//         '1231243423408':123,
+//         '1231243423409':234,
+//         '1231243423410':345,
+//         '1231243423411':123,
+//         '1231243423412':234,
+//         '1231243423413':123,
+//         '1231243423414':234,
+//         '1231243423415':123,
+//         '1231243423416':234,
+//         '1231243423417':123,
+//         '1231243423418':123,
+//     };
+//         //表格的数据
+//         const Bgdata = [
+//         {alarmRate:'10.5.22.0',appName:'itrade',type:'click',subType:'duankou',eventDetail:'端口：8050',gmtCreate:1536711453431,gmtOccur:1536711437435,eventStatus:0,operator:'李四',biangeng:5,activeType:1},
+//         {alarmRate:'10.5.22.0',appName:'itrade',type:'click',subType:'duankou',eventDetail:'端口：8050',gmtCreate:1536711443431,gmtOccur:1536711436431,eventStatus:0,operator:'李四',biangeng:5,activeType:2},
+//         {alarmRate:'10.5.22.0',appName:'itrade',type:'click',subType:'duankou',eventDetail:'端口：8050',gmtCreate:1536711433431,gmtOccur:1536711435431,eventStatus:0,operator:'李四',biangeng:5,activeType:3},
+//         {alarmRate:'10.5.22.0',appName:'itrade',type:'click',subType:'duankou',eventDetail:'端口：8050',gmtCreate:1536711423431,gmtOccur:1536711434431,eventStatus:0,operator:'李四',biangeng:5,activeType:4},
+//         {alarmRate:'10.5.22.0',appName:'itrade',type:'click',subType:'duankou',eventDetail:'端口：8050',gmtCreate:1536711413431,gmtOccur:1536711433431,eventStatus:0,operator:'李四',biangeng:5,activeType:5}
+//     ];
 
 
 class ClickEventPage extends Component{
@@ -160,12 +160,11 @@ class ClickEventPage extends Component{
     constructor(props){
         super(props);
         this.state={
-            //当前事件类型
-            eventType:'',
+
 
             // 数据的(以后通过ajax获取的数据放在这里)
-            G2data:[],
-            // Bgdata:[],
+            G2data:{},
+            Bgdata:[],
             activeType:[],
             showBgdata:[],
             typeColor:['#a00', '#0a0', '#b70'],
@@ -175,34 +174,11 @@ class ClickEventPage extends Component{
             visible: false,
 
             //当前时间
-            time:new Date().getTime()
-
+            time:new Date().getTime(),
+            //当前事件类型
+            eventType:'',
         };
-        window._state=this.state
     }
-
-    //这里注释的暂时都用不到了
-    // componentDidMount(){
-    //     let getG2Data=ajax('/array');
-    //     let getBgData=ajax('/bgdata');
-    //     if (this.state.Bgdata.length>0) return null;
-    //     Promise.all([getG2Data,getBgData])
-    //         .then(res=>{
-    //             this.setState({
-    //                 G2data:res[0].data,
-    //                 Bgdata:res[1].bgdata,
-    //                 typeColor:[
-    //                     '#a00',
-    //                     '#0a0',
-    //                     '#b70',
-    //                 ],
-    //                 activeType:0
-    //             });
-    //             console.log(this.state);
-    //         });
-    //     console.log(this.state.data);
-    // }
-    //
 
 
     //表格change
@@ -214,7 +190,7 @@ class ClickEventPage extends Component{
     callback=(e) =>{
         // console.log(e.target.type);
         let newActiveType=[];
-        let type=parseInt(e.target.type)
+        let type=parseInt(e.target.type);
         if (type === 0) {
             if (this.state.activeType.indexOf(type)>=0) {
                 this.setState({
@@ -224,7 +200,7 @@ class ClickEventPage extends Component{
             }else{
                 this.setState({
                     activeType:[0],
-                    showBgdata: Bgdata
+                    showBgdata: this.state.Bgdata
                 })
             }
         } else {
@@ -234,7 +210,7 @@ class ClickEventPage extends Component{
                 this.state.activeType=Array.from(new Set([...this.state.activeType,type]));
             }
             this.setState({
-                showBgdata:Bgdata.filter((a) => {
+                showBgdata:this.state.Bgdata.filter((a) => {
                     return this.state.activeType.indexOf(a.activeType)>=0
                 }),
                 activeType:this.state.activeType
@@ -252,7 +228,7 @@ class ClickEventPage extends Component{
 
     //模态框点了确定
     handleOk = (e) => {
-        console.log(e);
+        console.log(e.value);
         this.setState({
             visible: false,
         });
@@ -268,7 +244,7 @@ class ClickEventPage extends Component{
 
     //时间选择框发生改变
     onTimeChange = (time) => {
-        let setTime=new Date(time._d).getTime()
+        let setTime=new Date(time._d).getTime();
         console.log(typeof setTime);
         console.log(this.state);
         this.setState({
@@ -283,26 +259,37 @@ class ClickEventPage extends Component{
             eventType:e.key.toString()
         })
     };
-    componentDidMount(){
-        //改变showBgdata
-        //     switch (this.state.) {
-        //         case 0:
-        //             return this.state.showBgdata= Bgdata;
-        //         default:
-        //             return Bgdata.filter((a)=>{
-        //                 return this.state.showBgdata=a.activeType == index;
-        //             })
-        //     }
-        let newG2Data=[];
-        for (let key in G2data) {
-            newG2Data.push({
-                date:key,
-                value:G2data[key]
+
+    //点击回放
+    getdata = ()=>{
+        //ajax请求
+        //请求bgdata
+        getBgdata().then(res => {
+            console.log(res);
+            this.setState({
+                Bgdata:res.data
             })
-        }
-        this.setState({
-            G2data:newG2Data
-        })
+        });
+        //请求g2data
+        getG2data()
+            .then(res => {
+            console.log(res);
+            let data=res.data;
+            let newG2Data=[];
+            for (let key in data) {
+                newG2Data.push({
+                    date:key,
+                    value:data[key]
+                })
+            }
+            this.setState({
+                G2data:newG2Data
+            })
+        });
+    };
+    componentDidMount(){
+
+
     }
     render(){
         return(
@@ -342,12 +329,11 @@ class ClickEventPage extends Component{
                             <Input placeholder="啥啥啥" />
                         </Modal>
                     </div>
-                    
                     {/*时间选择器*/}
                     <div  className={'selectDate'}>
                         <span >选择时间：<DatePicker  format={dateFormat} onChange={this.onTimeChange}/></span>
                         <span> <TimePicker value={this.state.value} onChange={this.onTimeChange} /></span>
-                        <span><Button type="primary">回放</Button></span>
+                        <span><Button type="primary" onClick={this.getdata}>回放</Button></span>
                     </div>
                 </div>
                 <ul className={'select'}>

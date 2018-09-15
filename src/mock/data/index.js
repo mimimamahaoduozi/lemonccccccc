@@ -1,0 +1,32 @@
+export const G2data={
+    data:{
+        '1231243423401':213,
+        '1231243423402':213,
+        '1231243423403':231,
+        '1231243423404':233,
+        '1231243423405':353,
+        '1231243423406':123,
+        '1231243423407':123,
+        '1231243423408':123,
+        '1231243423409':234,
+        '1231243423410':345,
+        '1231243423411':123,
+        '1231243423412':234,
+        '1231243423413':123,
+        '1231243423414':234,
+        '1231243423415':123,
+        '1231243423416':234,
+        '1231243423417':123,
+        '1231243423418':123,
+    },
+    success:true
+};
+export const Bgdata = {
+    data:[
+    {alarmRate:'10.5.22.0',appName:'itrade',type:'click',subType:'duankou',eventDetail:'端口：8050',gmtCreate:1536711453431,gmtOccur:1536711437435,eventStatus:0,operator:'李四',biangeng:5,activeType:1},
+    {alarmRate:'10.5.22.0',appName:'itrade',type:'click',subType:'duankou',eventDetail:'端口：8050',gmtCreate:1536711443431,gmtOccur:1536711436431,eventStatus:0,operator:'李四',biangeng:5,activeType:2},
+    {alarmRate:'10.5.22.0',appName:'itrade',type:'click',subType:'duankou',eventDetail:'端口：8050',gmtCreate:1536711433431,gmtOccur:1536711435431,eventStatus:0,operator:'李四',biangeng:5,activeType:3},
+    {alarmRate:'10.5.22.0',appName:'itrade',type:'click',subType:'duankou',eventDetail:'端口：8050',gmtCreate:1536711423431,gmtOccur:1536711434431,eventStatus:0,operator:'李四',biangeng:5,activeType:4},
+    {alarmRate:'10.5.22.0',appName:'itrade',type:'click',subType:'duankou',eventDetail:'端口：8050',gmtCreate:1536711413431,gmtOccur:1536711433431,eventStatus:0,operator:'李四',biangeng:5,activeType:5}
+    ]
+};
