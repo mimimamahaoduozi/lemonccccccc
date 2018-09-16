@@ -1,10 +1,11 @@
 import axios from 'axios'
 
 export default function ajax (url, data = {}, type = 'GET') {
+    console.log(data);
     return new Promise(function (resolve, reject) {
-        let promise
+        let promise;
         if (type === 'GET') {
-            let dataStr = ''
+            let dataStr = '';
             Object.keys(data).forEach(key => {
                 dataStr += key + '=' + data[key] + '&'
             })

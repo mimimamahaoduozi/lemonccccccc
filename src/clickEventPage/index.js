@@ -4,6 +4,8 @@ import { Chart, Tooltip, Geom } from 'bizcharts'
 import 'antd/dist/antd.min.css'
 import {getBgdata,getG2data} from '../api/index'
 import './index.css'
+import ajax from '../api/fetch'
+
 
 //使用Mock
 require('../mock');
@@ -123,36 +125,7 @@ const columns = [
 ];
 
 
-// //假数据
-//         //图表的数据
-//         const G2data={
-//         '1231243423401':213,
-//         '1231243423402':213,
-//         '1231243423403':231,
-//         '1231243423404':233,
-//         '1231243423405':353,
-//         '1231243423406':123,
-//         '1231243423407':123,
-//         '1231243423408':123,
-//         '1231243423409':234,
-//         '1231243423410':345,
-//         '1231243423411':123,
-//         '1231243423412':234,
-//         '1231243423413':123,
-//         '1231243423414':234,
-//         '1231243423415':123,
-//         '1231243423416':234,
-//         '1231243423417':123,
-//         '1231243423418':123,
-//     };
-//         //表格的数据
-//         const Bgdata = [
-//         {alarmRate:'10.5.22.0',appName:'itrade',type:'click',subType:'duankou',eventDetail:'端口：8050',gmtCreate:1536711453431,gmtOccur:1536711437435,eventStatus:0,operator:'李四',biangeng:5,activeType:1},
-//         {alarmRate:'10.5.22.0',appName:'itrade',type:'click',subType:'duankou',eventDetail:'端口：8050',gmtCreate:1536711443431,gmtOccur:1536711436431,eventStatus:0,operator:'李四',biangeng:5,activeType:2},
-//         {alarmRate:'10.5.22.0',appName:'itrade',type:'click',subType:'duankou',eventDetail:'端口：8050',gmtCreate:1536711433431,gmtOccur:1536711435431,eventStatus:0,operator:'李四',biangeng:5,activeType:3},
-//         {alarmRate:'10.5.22.0',appName:'itrade',type:'click',subType:'duankou',eventDetail:'端口：8050',gmtCreate:1536711423431,gmtOccur:1536711434431,eventStatus:0,operator:'李四',biangeng:5,activeType:4},
-//         {alarmRate:'10.5.22.0',appName:'itrade',type:'click',subType:'duankou',eventDetail:'端口：8050',gmtCreate:1536711413431,gmtOccur:1536711433431,eventStatus:0,operator:'李四',biangeng:5,activeType:5}
-//     ];
+
 
 
 class ClickEventPage extends Component{
@@ -173,12 +146,15 @@ class ClickEventPage extends Component{
             value: null,
             visible: false,
 
+    //ajax请求参数
             //当前时间
             time:new Date().getTime(),
             //当前事件类型
             eventType:'',
         };
     }
+
+
 
 
     //表格change
@@ -254,7 +230,7 @@ class ClickEventPage extends Component{
 
     //改变当前事件类型
     changeEventType = (e) =>{
-        // console.log(e.key);
+        console.log(e.key);
         this.setState({
             eventType:e.key.toString()
         })
@@ -264,16 +240,24 @@ class ClickEventPage extends Component{
     getdata = ()=>{
         //ajax请求
         //请求bgdata
-        getBgdata().then(res => {
+        ajax('/bgdata')
+            .then(res => {
             console.log(res);
             this.setState({
                 Bgdata:res.data
             })
         });
         //请求g2data
-        getG2data()
+        ajax('http://localhost:3000/array',{
+            eventType:this.state.eventType,
+            from:this.state.time-3600000,
+            to:this.state.time,
+            subType:'先写死',
+        })
             .then(res => {
+            //这里的你要放到success里面
             console.log(res);
+            //改变请求到的数据的格式
             let data=res.data;
             let newG2Data=[];
             for (let key in data) {
@@ -282,6 +266,7 @@ class ClickEventPage extends Component{
                     value:data[key]
                 })
             }
+            //存到state里面
             this.setState({
                 G2data:newG2Data
             })
@@ -300,19 +285,19 @@ class ClickEventPage extends Component{
                         <Menu
                             mode="horizontal"
                         >
-                            <Menu.Item key="mail"  onClick={this.changeEventType}>
+                            <Menu.Item key="ALL"  onClick={this.changeEventType}>
                                 <h3>全部告警</h3>
                             </Menu.Item>
-                            <Menu.Item key="app" onClick={this.changeEventType}>
+                            <Menu.Item key="EVENT_TYPE" onClick={this.changeEventType}>
                                 <h3>单击事件</h3>
                             </Menu.Item>
-                            <Menu.Item key="jiaoyi" onClick={this.changeEventType}>
+                            <Menu.Item key="TRADE_TYPE" onClick={this.changeEventType}>
                                 <h3>交易事件</h3>
                             </Menu.Item>
-                            <Menu.Item key="huabei" onClick={this.changeEventType}>
+                            <Menu.Item key="EVENT_TYPE1" onClick={this.changeEventType}>
                                 <h3>基础设施事件</h3>
                             </Menu.Item>
-                            <Menu.Item key="alipay" onClick={this.changeEventType}>
+                            <Menu.Item key="EVENT_TYPE2" onClick={this.changeEventType}>
                                 <h3>其他自定义事件</h3>
                             </Menu.Item>
                         </Menu>
