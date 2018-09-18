@@ -1,21 +1,18 @@
 import React, { Component } from 'react';
-import { Table,Menu, Icon, DatePicker ,Button,TimePicker,Modal,Input} from 'antd'
+import { Table,Menu, Icon, DatePicker ,Button,TimePicker,Modal,Input,Select} from 'antd'
 import { Chart, Tooltip, Geom } from 'bizcharts'
+import moment from 'moment'
 import 'antd/dist/antd.min.css'
-import {getBgdata,getG2data} from '../api/index'
 import './index.css'
 import ajax from '../api/fetch'
-
 
 //使用Mock
 require('../mock');
 //图标使用的
-const scale = {
-    month: {alias: 'Month',},
-    count: {alias: 'Sales',},
-};
+
 
 const dateFormat = 'YYYY/MM/DD';
+const Option = Select.Option;
 //改变时间样式
 Date.prototype.toLocaleString = function() {
     return this.getFullYear() + "-" + (this.getMonth() + 1) + "-" + this.getDate() + " " + this.getHours() + ":" + this.getMinutes() + ":" + this.getSeconds();
@@ -28,101 +25,7 @@ const typeColor=[
     '#b70',
 ];
 
-//定义表格形态
-const columns = [
-    {
-        title: '',
-        dataIndex: 'eventStatus',
-        render(a){
-            return(<p style={{background:typeColor[parseInt(a)]}}/>)
-        }
-    },
-    {
-        title: '告警对象信息',
-        dataIndex: 'alarmRate',
-        filters: [{
-            text: 'Joe',
-            value: 'Joe',
-        }, {
-            text: 'Jim',
-            value: 'Jim',
-        }],
-        onFilter: (value, record) => record.name.indexOf(value) === 0,
-    },
-    {
-        title: '应用名',
-        dataIndex: 'appName',
-        filters: [{
-            text: 'Joe',
-            value: 'Joe',
-        }, {
-            text: 'Jim',
-            value: 'Jim',
-        }],
-        onFilter: (value, record) => record.name.indexOf(value) === 0,
-    },
-    {
-        title: '告警类型',
-        dataIndex: 'type',
-        defaultSortOrder: 'descend',
-        sorter: (a, b) => a.age - b.age,
-    },
-    {
-        title: '告警子类型',
-        dataIndex: 'subType',
-        filters: [{
-            text: 'Joe',
-            value: 'Joe',
-        }, {
-            text: 'Jim',
-            value: 'Jim',
-        }],
-        onFilter: (value, record) => record.name.indexOf(value) === 0,
-    },
-    {
-        title: '告警详情',
-        dataIndex: 'eventDetail',
-    },
-    {
-        title: '告警开始时间',
-        dataIndex: 'gmtCreate',
-        defaultSortOrder: 'descend',
-        sorter: (a, b) => a.age - b.age,
-        render: (a) => new Date(a).toLocaleString()
-    },
-    {
-        title: '告警处理时间',
-        dataIndex: 'gmtOccur',
-        defaultSortOrder: 'descend',
-        sorter: (a, b) => a.age - b.age,
-        render: (a) => new Date(a).toLocaleString()
-    },
-    {
-        title: '告警状态',
-        dataIndex: 'eventStatus1',
-        filters: [{
-            text: 'Joe',
-            value: 'Joe',
-        }, {
-            text: 'Jim',
-            value: 'Jim',
-        }],
-        onFilter: (value, record) => record.name.indexOf(value) === 0,
-    },
-    {
-        title: '告警处理人',
-        dataIndex: 'operator',
-    },
-    {
-        title: '相关变更',
-        dataIndex: 'address',
-    },
-    {
-        title: '操作',
-        dataIndex: 'address1',
-    }
 
-];
 
 
 
@@ -134,16 +37,14 @@ class ClickEventPage extends Component{
         super(props);
         this.state={
 
-
             // 数据的(以后通过ajax获取的数据放在这里)
             G2data:{},
             Bgdata:[],
-            activeType:[],
+            activeType:[0],
             showBgdata:[],
             typeColor:['#a00', '#0a0', '#b70'],
 
             //下面是导航的
-            value: null,
             visible: false,
 
     //ajax请求参数
@@ -154,18 +55,113 @@ class ClickEventPage extends Component{
         };
     }
 
+    //定义表格形态
+    columns = [
+        {
+            title: '',
+            dataIndex: 'eventStatus',
+            render(a){
+                return(<p style={{background:typeColor[parseInt(a)]}}/>)
+            }
+        },
+        {
+            title: '告警对象信息',
+            dataIndex: 'alarmRate',
+            filters: [{
+                text: 'Joe',
+                value: 'Joe',
+            }, {
+                text: 'Jim',
+                value: 'Jim',
+            }],
+            onFilter: (value, record) => record.name.indexOf(value) === 0,
+        },
+        {
+            title: '应用名',
+            dataIndex: 'appName',
+            filters: [{
+                text: 'Joe',
+                value: 'Joe',
+            }, {
+                text: 'Jim',
+                value: 'Jim',
+            }],
+            onFilter: (value, record) => record.name.indexOf(value) === 0,
+        },
+        {
+            title: '告警类型',
+            dataIndex: 'type',
+            defaultSortOrder: 'descend',
+            sorter: (a, b) => a.age - b.age,
+        },
+        {
+            title: '告警子类型',
+            dataIndex: 'subType',
+            filters: [{
+                text: 'Joe',
+                value: 'Joe',
+            }, {
+                text: 'Jim',
+                value: 'Jim',
+            }],
+            onFilter: (value, record) => record.name.indexOf(value) === 0,
+        },
+        {
+            title: '告警详情',
+            dataIndex: 'eventDetail',
+        },
+        {
+            title: '告警开始时间',
+            dataIndex: 'gmtCreate',
+            defaultSortOrder: 'descend',
+            sorter: (a, b) => a.age - b.age,
+            render: (a) => new Date(a).toLocaleString()
+        },
+        {
+            title: '告警处理时间',
+            dataIndex: 'gmtOccur',
+            defaultSortOrder: 'descend',
+            sorter: (a, b) => a.age - b.age,
+            render: (a) => new Date(a).toLocaleString()
+        },
+        {
+            title: '告警状态',
+            dataIndex: 'eventStatus1',
+            filters: [{
+                text: 'Joe',
+                value: 'Joe',
+            }, {
+                text: 'Jim',
+                value: 'Jim',
+            }],
+            onFilter: (value, record) => record.name.indexOf(value) === 0,
+        },
+        {
+            title: '告警处理人',
+            dataIndex: 'operator',
+        },
+        {
+            title: '相关变更',
+            dataIndex: 'address',
+            render :(a) => {
+                return(<a onClick={this.case}>相关变更</a>)
+            }
+        },
+        {
+            title: '操作',
+            dataIndex: 'address1',
+        }
 
-
+    ];
 
     //表格change
-    // onChange=(pagination, filters, sorter) => {
-    //     console.log('params', pagination, filters, sorter);
-    // };
+    onChange=(pagination, filters, sorter) => {
+        console.log('params', pagination, filters, sorter);
+    };
 
     //选择类型
     callback=(e) =>{
         // console.log(e.target.type);
-        let newActiveType=[];
         let type=parseInt(e.target.type);
         if (type === 0) {
             if (this.state.activeType.indexOf(type)>=0) {
@@ -224,34 +220,37 @@ class ClickEventPage extends Component{
         console.log(typeof setTime);
         console.log(this.state);
         this.setState({
-            time:setTime
+            time:setTime,
+            value: time
         });
     };
 
     //改变当前事件类型
     changeEventType = (e) =>{
+
         console.log(e.key);
         this.setState({
             eventType:e.key.toString()
         })
     };
 
-    //点击回放
-    getdata = ()=>{
+    //调后台接口
+    getdata = (time)=>{
         //ajax请求
         //请求bgdata
         ajax('/bgdata')
             .then(res => {
             console.log(res);
             this.setState({
-                Bgdata:res.data
+                Bgdata:res.data,
+                showBgdata:res.data
             })
         });
         //请求g2data
         ajax('http://localhost:3000/array',{
-            eventType:this.state.eventType,
-            from:this.state.time-3600000,
-            to:this.state.time,
+            eventType:this.state.eventType || 'EVENT_TYPE',
+            from:time-3600000,
+            to:time,
             subType:'先写死',
         })
             .then(res => {
@@ -259,24 +258,84 @@ class ClickEventPage extends Component{
             console.log(res);
             //改变请求到的数据的格式
             let data=res.data;
-            let newG2Data=[];
-            for (let key in data) {
-                newG2Data.push({
-                    date:key,
-                    value:data[key]
-                })
-            }
-            //存到state里面
+            let newG2Data=this.handleData(data)
             this.setState({
                 G2data:newG2Data
             })
         });
     };
+
+
+
+    //G2筛选数据（每分钟一个）
+    handleData =(data)=>{
+        let date = 1231243423401;
+        let newData=[];
+        for (let i=0; i<60; i++){
+            newData.push({
+                date : date,
+                value: data[date] || 0
+            });
+            date+=60000;
+        }
+        return newData;
+    };
+    //时间戳转时间
+    getdate =(timestamp) => {
+        let date = new Date(timestamp);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
+        let Y = date.getFullYear() + '-';
+        let M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+        let D = date.getDate() + ' ';
+        console.log(Y + M + D);
+        return Y+M+D;
+    };
+    gettime = (timestamp) => {
+        let date = new Date(timestamp);
+        let h = date.getHours() + ':';
+        let m = date.getMinutes() + ':';
+        let s = date.getSeconds();
+        console.log(h + m + s);
+        return h+m+s
+    };
+
+
+    //选择框发生改变
+    handleChange=(value) => {
+        console.log(`${value}`);
+        if (value == 'hf') {
+            this.getdata(this.state.time);
+            clearInterval(this.i)
+        }else {
+            this.getdata(new Date().toTimeString());
+            clearInterval(this.i);
+            this.i=setInterval(()=>{this.getdata(new Date().toTimeString())},10000)
+        }
+    };
+
+    case = ()=>{
+        console.log(111111111)
+    }
+
+    //钩子函数
     componentDidMount(){
-
-
+        this.getdata(new Date().toTimeString());
+        this.i=setInterval(()=>{this.getdata(new Date().toTimeString())},10000)
+    }
+    componentWillUnmount(){
+        clearInterval(this.i)
     }
     render(){
+        //默认时间
+        let date = this.getdate(this.state.time);
+        let time = this.gettime(this.state.time);
+        const cols = {
+            date: {
+                // min: 1231243423401,
+                tickInterval:60
+            }
+        };
+        // console.log(this.state.G2data);
+
         return(
             <div>
                 {/*导航*/}
@@ -316,9 +375,15 @@ class ClickEventPage extends Component{
                     </div>
                     {/*时间选择器*/}
                     <div  className={'selectDate'}>
-                        <span >选择时间：<DatePicker  format={dateFormat} onChange={this.onTimeChange}/></span>
-                        <span> <TimePicker value={this.state.value} onChange={this.onTimeChange} /></span>
-                        <span><Button type="primary" onClick={this.getdata}>回放</Button></span>
+                        <span >选择时间：<DatePicker  format={dateFormat} defaultValue={moment(date, dateFormat)} onChange={this.onTimeChange}/></span>
+                        <span> <TimePicker defaultValue={moment(time, 'HH:mm:ss')}   onChange={this.onTimeChange} /></span>
+                        {/*<span><Button type="primary" onClick={this.getdata}>回放</Button></span>*/}
+                        <Select defaultValue="实时" style={{ width: 120 }} onChange={this.handleChange}>
+                            <Option value="hf">回放</Option>
+                            <Option value="now">实时</Option>
+                        </Select>
+                        {/*下拉菜单*/}
+
                     </div>
                 </div>
                 <ul className={'select'}>
@@ -348,12 +413,13 @@ class ClickEventPage extends Component{
 
                 {/* *******图表********* */}
 
-                <Chart height={100} data={this.state.G2data} scale={scale} forceFit padding={[0,0,0,0]}>
-                    <Tooltip crosshairs={{ type: 'rect' }} />
-                    <Geom type="interval" position="date*value" color="month"/>
+                <Chart height={100} data={this.state.G2data} scale={cols} forceFit padding={[0,0,0,0]}>
+                    <Tooltip />
+                    <Geom type="interval" position="date*value" color="#070" onClick={this.case}/>
                 </Chart>
+
                 <Table
-                    columns={columns} dataSource={this.state.showBgdata} onChange={this.onChange}
+                    columns={this.columns} dataSource={this.state.showBgdata} onChange={this.onChange}
                 />,
             </div>
         )

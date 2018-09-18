@@ -1,4 +1,7 @@
-export const G2data={
+import React, { Component } from 'react';
+
+import { Chart, Tooltip, Geom } from 'bizcharts'
+const G2data={
     data:{ '1231243423401': 22,
         '1231243483401': 99,
         '1231243543401': 53,
@@ -60,15 +63,32 @@ export const G2data={
         '1231246903401': 160,
         '1231246963401': 168 },
     success:true
-};
+}
+class Case extends Component{
+    render(){
+        const cols = {
+            sales: {
+                tickInterval: 20,
+                tickCount: 60,
+                type:'linear'
+            },
+            month: {
+                alias: '时间' // 为属性定义别名
+            },
+            temperature: {
+                alias: '值' // 为属性定义别名
+            }
+        };
+        return(
+            <div>
+                nihao
 
-export const Bgdata = {
-    data:[
-    {alarmRate:'10.5.22.0',appName:'itrade',type:'click',subType:'duankou',eventDetail:'端口：8050',gmtCreate:1536711453431,gmtOccur:1536711437435,eventStatus:0,operator:'李四',biangeng:5,activeType:1},
-    {alarmRate:'10.5.22.0',appName:'itrade',type:'click',subType:'duankou',eventDetail:'端口：8050',gmtCreate:1536711443431,gmtOccur:1536711436431,eventStatus:0,operator:'李四',biangeng:5,activeType:2},
-    {alarmRate:'10.5.22.0',appName:'itrade',type:'click',subType:'duankou',eventDetail:'端口：8050',gmtCreate:1536711433431,gmtOccur:1536711435431,eventStatus:0,operator:'李四',biangeng:5,activeType:3},
-    {alarmRate:'10.5.22.0',appName:'itrade',type:'click',subType:'duankou',eventDetail:'端口：8050',gmtCreate:1536711423431,gmtOccur:1536711434431,eventStatus:0,operator:'李四',biangeng:5,activeType:4},
-    {alarmRate:'10.5.22.0',appName:'itrade',type:'click',subType:'duankou',eventDetail:'端口：8050',gmtCreate:1536711413431,gmtOccur:1536711433431,eventStatus:0,operator:'李四',biangeng:5,activeType:5}
-    ],
-    success:true
-};
+            <Chart height={100} data={G2data.data} scale={cols} forceFit padding={[0,0,0,0]}>
+                <Tooltip />
+                <Geom type="interval"  color="#070"/>
+            </Chart>
+            </div>
+        )
+    }
+}
+export default Case
