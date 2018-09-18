@@ -5,11 +5,8 @@ import moment from 'moment'
 import 'antd/dist/antd.min.css'
 import './index.css'
 import ajax from '../api/fetch'
-
 //使用Mock
 require('../mock');
-//图标使用的
-
 
 const dateFormat = 'YYYY/MM/DD';
 const Option = Select.Option;
@@ -25,13 +22,7 @@ const typeColor=[
     '#b70',
 ];
 
-
-
-
-
-
-
-class ClickEventPage extends Component{
+export default class ClickEventPage extends Component{
 
     constructor(props){
         super(props);
@@ -54,7 +45,6 @@ class ClickEventPage extends Component{
             eventType:'',
         };
     }
-
     //定义表格形态
     columns = [
         {
@@ -153,15 +143,12 @@ class ClickEventPage extends Component{
         }
 
     ];
-
     //表格change
     onChange=(pagination, filters, sorter) => {
         console.log('params', pagination, filters, sorter);
     };
-
-    //选择类型
+    //选择子类型（筛选表单信息）
     callback=(e) =>{
-        // console.log(e.target.type);
         let type=parseInt(e.target.type);
         if (type === 0) {
             if (this.state.activeType.indexOf(type)>=0) {
@@ -176,10 +163,20 @@ class ClickEventPage extends Component{
                 })
             }
         } else {
-            if (this.state.activeType.indexOf(type)>=0) {
-                this.state.activeType.pop(type);
-            }else{
-                this.state.activeType=Array.from(new Set([...this.state.activeType,type]));
+            if (this.state.activeType.indexOf(0)>=0) {
+                this.setState({
+                    showBgdata:this.state.Bgdata.filter(() => {
+                        return this.state.activeType.indexOf(type)>=0
+                    }),
+                    activeType:[type]
+                })
+            }
+            else {
+                if (this.state.activeType.indexOf(type) >= 0) {
+                    this.state.activeType.pop(type);
+                } else {
+                    this.state.activeType = Array.from(new Set([...this.state.activeType, type]));
+                }
             }
             this.setState({
                 showBgdata:this.state.Bgdata.filter((a) => {
@@ -188,24 +185,20 @@ class ClickEventPage extends Component{
                 activeType:this.state.activeType
             })
         }
-
     };
-
     //控制模态框
     showModal = () => {
         this.setState({
             visible: true,
         });
     };
-
     //模态框点了确定
     handleOk = (e) => {
-        console.log(e.value);
+        console.log(e);
         this.setState({
             visible: false,
         });
     };
-
     //模态框点了取消
     handleCancel = (e) => {
         console.log(e);
@@ -213,34 +206,27 @@ class ClickEventPage extends Component{
             visible: false,
         });
     };
-
     //时间选择框发生改变
     onTimeChange = (time) => {
         let setTime=new Date(time._d).getTime();
-        console.log(typeof setTime);
-        console.log(this.state);
         this.setState({
             time:setTime,
             value: time
         });
     };
-
     //改变当前事件类型
     changeEventType = (e) =>{
 
-        console.log(e.key);
         this.setState({
             eventType:e.key.toString()
         })
     };
-
     //调后台接口
     getdata = (time)=>{
         //ajax请求
         //请求bgdata
         ajax('/bgdata')
             .then(res => {
-            console.log(res);
             this.setState({
                 Bgdata:res.data,
                 showBgdata:res.data
@@ -254,8 +240,6 @@ class ClickEventPage extends Component{
             subType:'先写死',
         })
             .then(res => {
-            //这里的你要放到success里面
-            console.log(res);
             //改变请求到的数据的格式
             let data=res.data;
             let newG2Data=this.handleData(data)
@@ -264,9 +248,6 @@ class ClickEventPage extends Component{
             })
         });
     };
-
-
-
     //G2筛选数据（每分钟一个）
     handleData =(data)=>{
         let date = 1231243423401;
@@ -286,7 +267,6 @@ class ClickEventPage extends Component{
         let Y = date.getFullYear() + '-';
         let M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
         let D = date.getDate() + ' ';
-        console.log(Y + M + D);
         return Y+M+D;
     };
     gettime = (timestamp) => {
@@ -294,14 +274,10 @@ class ClickEventPage extends Component{
         let h = date.getHours() + ':';
         let m = date.getMinutes() + ':';
         let s = date.getSeconds();
-        console.log(h + m + s);
         return h+m+s
     };
-
-
     //选择框发生改变
     handleChange=(value) => {
-        console.log(`${value}`);
         if (value == 'hf') {
             this.getdata(this.state.time);
             clearInterval(this.i)
@@ -311,11 +287,10 @@ class ClickEventPage extends Component{
             this.i=setInterval(()=>{this.getdata(new Date().toTimeString())},10000)
         }
     };
-
+    //相关变更模态框
     case = ()=>{
         console.log(111111111)
-    }
-
+    };
     //钩子函数
     componentDidMount(){
         this.getdata(new Date().toTimeString());
@@ -330,12 +305,10 @@ class ClickEventPage extends Component{
         let time = this.gettime(this.state.time);
         const cols = {
             date: {
-                // min: 1231243423401,
                 tickInterval:60
             }
         };
-        // console.log(this.state.G2data);
-
+        console.log(this.state);
         return(
             <div>
                 {/*导航*/}
@@ -412,7 +385,6 @@ class ClickEventPage extends Component{
                 <p>近一个小时</p>
 
                 {/* *******图表********* */}
-
                 <Chart height={100} data={this.state.G2data} scale={cols} forceFit padding={[0,0,0,0]}>
                     <Tooltip />
                     <Geom type="interval" position="date*value" color="#070" onClick={this.case}/>
@@ -425,8 +397,4 @@ class ClickEventPage extends Component{
         )
     }
 }
-
-
-
-export default ClickEventPage;
 

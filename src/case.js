@@ -27,18 +27,20 @@ const data=new Object({
     '1231243423417':123,
     '1231243423418':123,
 });
-let date=1231243423401;
-let handleDara =(data)=>{
-    let newData={};
-    for (let i=0; i<60; i++){
-        // newData.push({
-        //     date : date,
-        //     value: data[date] || 0
-        // });
-        newData[date]=parseInt(Math.random()*200)
-        date+=60000;
-    }
-    return newData;
-};
+// let date=1231243423401;
+// let handleDara =(data)=>{
+//     let newData={};
+//     for (let i=0; i<60; i++){
+//         // newData.push({
+//         //     date : date,
+//         //     value: data[date] || 0
+//         // });
+//         newData[date]=parseInt(Math.random()*200)
+//         date+=60000;
+//     }
+//     return newData;
+// };
+//
+// console.log(handleDara(data));
 
-console.log(handleDara(data));
+
