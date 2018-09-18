@@ -5,6 +5,7 @@ import moment from 'moment'
 import 'antd/dist/antd.min.css'
 import './index.css'
 import ajax from '../api/fetch'
+import {Bgdata} from "../mock/data";
 //使用Mock
 require('../mock');
 
@@ -149,9 +150,10 @@ export default class ClickEventPage extends Component{
     };
     //选择子类型（筛选表单信息）
     callback=(e) =>{
-        let type=parseInt(e.target.type);
-        if (type === 0) {
-            if (this.state.activeType.indexOf(type)>=0) {
+        let type=e.target.type;
+        console.log(type);
+        if (parseInt(type) == 0) {
+            if (this.state.activeType.indexOf(parseInt(type))>=0) {
                 this.setState({
                     activeType:[],
                     showBgdata:[]
@@ -162,21 +164,18 @@ export default class ClickEventPage extends Component{
                     showBgdata: this.state.Bgdata
                 })
             }
-        } else {
-            if (this.state.activeType.indexOf(0)>=0) {
-                this.setState({
-                    showBgdata:this.state.Bgdata.filter(() => {
-                        return this.state.activeType.indexOf(type)>=0
-                    }),
-                    activeType:[type]
-                })
-            }
-            else {
-                if (this.state.activeType.indexOf(type) >= 0) {
-                    this.state.activeType.pop(type);
-                } else {
-                    this.state.activeType = Array.from(new Set([...this.state.activeType, type]));
-                }
+        } else if(this.state.activeType.indexOf(0)>=0){
+            this.setState({
+                showBgdata:this.state.Bgdata.filter((a) => {
+                    return this.state.activeType.indexOf(type)>=0
+                }),
+                activeType:[type]
+            })
+        }else {
+            if (this.state.activeType.indexOf(type) >= 0) {
+                this.state.activeType.pop(type);
+            } else {
+                this.state.activeType = Array.from(new Set([...this.state.activeType, type]));
             }
             this.setState({
                 showBgdata:this.state.Bgdata.filter((a) => {
@@ -360,34 +359,56 @@ export default class ClickEventPage extends Component{
                     </div>
                 </div>
                 <ul className={'select'}>
-                    <li className={this.state.activeType.indexOf(0)>=0?'active':''} type={0} onClick={this.callback}>选择全部</li>
+                    <li className={this.state.activeType.indexOf(0)>=0?'active':''} type={0} onClick={this.callback} id={'all'}>选择全部</li>
                     <li
-                        className={this.state.activeType.indexOf(1)>=0||this.state.activeType.indexOf(0)>=0?'active':''}
-                        type={1} onClick={this.callback}
-                    >口告警类型</li>
+                        className={this.state.activeType.indexOf('checkservice_ports_0')>=0?'active':''}
+                        type={'checkservice_ports_0'} onClick={this.callback}
+                    >端口0报警</li>
                     <li
-                        className={this.state.activeType.indexOf(2)>=0||this.state.activeType.indexOf(0)>=0?'active':''}
-                        type={2} onClick={this.callback}
-                    >CPU告警类型</li>
+                        className={this.state.activeType.indexOf('checkservice_ports_1')>=0?'active':''}
+                        type={'checkservice_ports_1'} onClick={this.callback}
+                    >端口1报警</li>
                     <li
-                        className={this.state.activeType.indexOf(3)>=0||this.state.activeType.indexOf(0)>=0?'active':''}
-                        type={3} onClick={this.callback}
-                    >内存告警类型</li>
+                        className={this.state.activeType.indexOf('process_processes')>=0?'active':''}
+                        type={'process_processes'} onClick={this.callback}
+                    >进行报警</li>
                     <li
-                        className={this.state.activeType.indexOf(4)>=0||this.state.activeType.indexOf(0)>=0?'active':''}
-                        type={4} onClick={this.callback}
-                    >事件子类型D</li>
+                        className={this.state.activeType.indexOf('system_cpu')>=0?'active':''}
+                        type={'system_cpu'} onClick={this.callback}
+                    >CPU报警</li>
                     <li
-                        className={this.state.activeType.indexOf(5)>=0||this.state.activeType.indexOf(0)>=0?'active':''}
-                        type={5} onClick={this.callback}
-                    >事件子类型E</li>
+                        className={this.state.activeType.indexOf('system_df')>=0?'active':''}
+                        type={'system_df'} onClick={this.callback}
+                    >磁盘报警</li>
+                    <li
+                        className={this.state.activeType.indexOf('system_load1')>=0?'active':''}
+                        type={'system_load1'} onClick={this.callback}
+                    >load1报警</li>
+                    <li
+                        className={this.state.activeType.indexOf('system_load15')>=0?'active':''}
+                        type={'system_load15'} onClick={this.callback}
+                    >load15报警</li>
+                    <li
+                        className={this.state.activeType.indexOf('system_load5')>=0?'active':''}
+                        type={'system_load5'} onClick={this.callback}
+                    >load5报警</li>
+                    <li
+                        className={this.state.activeType.indexOf('system_mem')>=0?'active':''}
+                        type={'system_mem'} onClick={this.callback}
+                    >内存报警</li>
                 </ul>
                 <p>近一个小时</p>
 
                 {/* *******图表********* */}
-                <Chart height={100} data={this.state.G2data} scale={cols} forceFit padding={[0,0,0,0]}>
+                <Chart height={100} data={this.state.G2data} scale={cols} forceFit padding={[0,0,0,0]} className={'nnn'}>
                     <Tooltip />
-                    <Geom type="interval" position="date*value" color="#070" onClick={this.case}/>
+                    <Geom type="interval" position="date*value" color="#070" onClick={this.case} adjust= {[
+                        {
+                            type: 'stack',
+                            marginRatio: 1, // 数值范围为 0 至 1，用于调整分组中各个柱子的间距
+                            dodgeBy: 'xx', // 声明按照 xx 字段进行分组，一般不需要声明
+                        }
+                    ]}/>
                 </Chart>
 
                 <Table
