@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { Table,Menu, Icon, DatePicker ,Button,TimePicker,Modal,Input,Select} from 'antd'
-import { Chart, Tooltip, Geom } from 'bizcharts'
+// import { Chart, Tooltip, Geom } from 'bizcharts'
+import BarChart from '../g2'
 import moment from 'moment'
 import 'antd/dist/antd.min.css'
 import './index.css'
-import ajax from '../api/fetch'
-import {Bgdata} from "../mock/data";
+import * as ajax from '../api'
 //使用Mock
 require('../mock');
 
@@ -173,13 +173,13 @@ export default class ClickEventPage extends Component{
             })
         }else {
             if (this.state.activeType.indexOf(type) >= 0) {
-                this.state.activeType.pop(type);
+                this.state.activeType.splice(this.state.activeType.indexOf(type),1)
             } else {
                 this.state.activeType = Array.from(new Set([...this.state.activeType, type]));
             }
             this.setState({
                 showBgdata:this.state.Bgdata.filter((a) => {
-                    return this.state.activeType.indexOf(a.activeType)>=0
+                    return this.state.activeType.indexOf(a.subType)>=0
                 }),
                 activeType:this.state.activeType
             })
@@ -224,7 +224,7 @@ export default class ClickEventPage extends Component{
     getdata = (time)=>{
         //ajax请求
         //请求bgdata
-        ajax('/bgdata')
+        ajax.getBgdata()
             .then(res => {
             this.setState({
                 Bgdata:res.data,
@@ -232,12 +232,7 @@ export default class ClickEventPage extends Component{
             })
         });
         //请求g2data
-        ajax('http://localhost:3000/array',{
-            eventType:this.state.eventType || 'EVENT_TYPE',
-            from:time-3600000,
-            to:time,
-            subType:'先写死',
-        })
+        ajax.getG2data()
             .then(res => {
             //改变请求到的数据的格式
             let data=res.data;
@@ -249,16 +244,24 @@ export default class ClickEventPage extends Component{
     };
     //G2筛选数据（每分钟一个）
     handleData =(data)=>{
-        let date = 1231243423401;
-        let newData=[];
-        for (let i=0; i<60; i++){
-            newData.push({
-                date : date,
-                value: data[date] || 0
-            });
-            date+=60000;
+        let newData = [];
+        let time =new Date(1231243123401).getMinutes();
+        let date='';let value=0;
+        for(let i in data) {
+            if (new Date(parseInt(i)).getMinutes() == time) {
+                date=i;
+                value+=data[i]
+            }else {
+                newData.push({
+                    date:date,
+                    value:value
+                });
+                time=new Date(parseInt(i)).getMinutes();
+                value=data[i] || 0;
+                date=i
+            }
         }
-        return newData;
+        return newData
     };
     //时间戳转时间
     getdate =(timestamp) => {
@@ -310,6 +313,7 @@ export default class ClickEventPage extends Component{
         console.log(this.state);
         return(
             <div>
+                <h3>聚合事件审查</h3>
                 {/*导航*/}
                 <div className={'nav'}>
                     <div className={'nav-left'}>
@@ -350,7 +354,7 @@ export default class ClickEventPage extends Component{
                         <span >选择时间：<DatePicker  format={dateFormat} defaultValue={moment(date, dateFormat)} onChange={this.onTimeChange}/></span>
                         <span> <TimePicker defaultValue={moment(time, 'HH:mm:ss')}   onChange={this.onTimeChange} /></span>
                         {/*<span><Button type="primary" onClick={this.getdata}>回放</Button></span>*/}
-                        <Select defaultValue="实时" style={{ width: 120 }} onChange={this.handleChange}>
+                        <Select defaultValue="实时" style={{ width: 120 }} onChange={this.handleChange} >
                             <Option value="hf">回放</Option>
                             <Option value="now">实时</Option>
                         </Select>
@@ -400,16 +404,7 @@ export default class ClickEventPage extends Component{
                 <p>近一个小时</p>
 
                 {/* *******图表********* */}
-                <Chart height={100} data={this.state.G2data} scale={cols} forceFit padding={[0,0,0,0]} className={'nnn'}>
-                    <Tooltip />
-                    <Geom type="interval" position="date*value" color="#070" onClick={this.case} adjust= {[
-                        {
-                            type: 'stack',
-                            marginRatio: 1, // 数值范围为 0 至 1，用于调整分组中各个柱子的间距
-                            dodgeBy: 'xx', // 声明按照 xx 字段进行分组，一般不需要声明
-                        }
-                    ]}/>
-                </Chart>
+                <BarChart data={this.state.G2data}/>
 
                 <Table
                     columns={this.columns} dataSource={this.state.showBgdata} onChange={this.onChange}

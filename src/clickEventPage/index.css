@@ -78,3 +78,9 @@ td>p{
 .nnn{
     padding: 0 20px;
 }
+.ant-select-dropdown-menu-item-selected,.ant-select-selection{
+    background: #40a9ff;
+    color: #fff;
+    border: none;
+}
+
